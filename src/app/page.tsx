@@ -248,7 +248,7 @@ function Footer() {
           <div className="footer-col">
             <h4>Kontakt</h4>
             <a href="#">📍 ul. Sienkiewicza 9, Zielona Góra</a>
-            <a href="tel:+48601654605">📞 601 654 605</a>
+            <a href="tel:+48887535955">📞 887 535 955</a>
             <a href="mailto:outlet@notodom.pl">✉️ outlet@notodom.pl</a>
             <a href="#">🕐 Pon–Pt: 9:00–17:00</a>
           </div>

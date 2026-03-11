@@ -286,7 +286,7 @@ export default function ProductPage() {
               {/* CTA BUTTONS */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <a
-                  href="tel:+48601654605"
+                  href="tel:+48887535955"
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                     background: 'var(--charcoal)', color: '#fff',
@@ -336,7 +336,7 @@ export default function ProductPage() {
             <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', color: '#fff', marginBottom: '8px' }}>
               notoDOM <em style={{ color: 'var(--gold)' }}>Outlet</em>
             </div>
-            <p>ul. Sienkiewicza 9, Zielona Góra · 📞 601 654 605 · outlet@notodom.pl</p>
+            <p>ul. Sienkiewicza 9, Zielona Góra · 📞 887 535 955 · outlet@notodom.pl</p>
           </div>
         </footer>
       </div>
