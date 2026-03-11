@@ -1,14 +1,14 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
+import { products, categories, formatPrice, calcDiscount } from './data/products'
 
 const ArrowIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
 )
 
-// ═══════ TOP BAR ═══════
 function TopBar() {
   return (
     <div className="top-bar">
@@ -21,28 +21,22 @@ function TopBar() {
   )
 }
 
-// ═══════ HEADER ═══════
 function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
         <a href="#" className="logo">notoDOM <em>Outlet</em></a>
         <nav className="nav-links">
-          <a href="#kategorie">Salon</a>
-          <a href="#kategorie">Jadalnia</a>
-          <a href="#kategorie">Sypialnia</a>
-          <a href="#galeria">Galeria</a>
+          <a href="#okazje">Narożniki</a>
+          <a href="#okazje">Stoły</a>
+          <a href="#okazje">Zestawy</a>
           <a href="#kontakt" className="nav-cta">Kontakt</a>
         </nav>
-        <button className="menu-toggle" aria-label="Menu">
-          <span /><span /><span />
-        </button>
       </div>
     </header>
   )
 }
 
-// ═══════ HERO ═══════
 function Hero() {
   return (
     <section className="hero">
@@ -67,7 +61,6 @@ function Hero() {
   )
 }
 
-// ═══════ TRUST ═══════
 function Trust() {
   const items = [
     {
@@ -86,7 +79,6 @@ function Trust() {
       text: 'Niska cena nie oznacza braku ochrony. Wszystkie nasze meble outletowe są w pełni użyteczne i objęte pełną opieką gwarancyjną.',
     },
   ]
-
   return (
     <section className="trust">
       <div className="container">
@@ -104,126 +96,79 @@ function Trust() {
   )
 }
 
-// ═══════ CATEGORIES ═══════
-function Categories() {
-  const cats = [
-    { emoji: '🛋️', name: 'Salon', desc: 'Sofy, narożniki, meble RTV', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80' },
-    { emoji: '🍽️', name: 'Jadalnia', desc: 'Stoły, krzesła, dąb naturalny', img: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=600&q=80' },
-    { emoji: '🛏️', name: 'Sypialnia', desc: 'Łóżka, materace, szafy', img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80' },
-  ]
-
-  return (
-    <section className="categories" id="kategorie">
-      <div className="container">
-        <span className="section-label">Wybierz pomieszczenie</span>
-        <h2 className="section-title">Czego dziś szukasz?</h2>
-        <div className="cat-grid">
-          {cats.map((cat, i) => (
-            <div key={i} className={`cat-card fade-up delay-${i * 2}`}>
-              <img src={cat.img} alt={cat.name} />
-              <div className="cat-overlay" />
-              <div className="cat-info">
-                <span className="cat-emoji">{cat.emoji}</span>
-                <div className="cat-name">{cat.name}</div>
-                <div className="cat-desc">{cat.desc}</div>
-              </div>
-              <div className="cat-arrow"><ArrowIcon /></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ═══════ PRODUCTS ═══════
 function Products() {
-  const products = [
-    {
-      badge: 'Ostatnia sztuka!', badgeClass: 'badge-last',
-      origin: 'Końcówka serii', name: 'Narożnik Modena z funkcją spania',
-      oldPrice: '9 420 zł', newPrice: '4 800 zł', save: '-49%',
-      img: 'https://images.unsplash.com/photo-1550254478-ead40cc54513?w=600&q=80',
-    },
-    {
-      badge: 'Dostępne od ręki', badgeClass: 'badge-ready',
-      origin: 'Z ekspozycji', name: 'Stół dębowy Bergen 180×90',
-      oldPrice: '5 200 zł', newPrice: '2 490 zł', save: '-52%',
-      img: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&q=80',
-    },
-    {
-      badge: 'Z ekspozycji', badgeClass: 'badge-expo',
-      origin: 'Model poekspozycyjny', name: 'Łóżko tapicerowane Velvet 160',
-      oldPrice: '7 800 zł', newPrice: '3 290 zł', save: '-58%',
-      img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80',
-    },
-  ]
+  const [activeCategory, setActiveCategory] = useState('wszystkie')
+
+  const filtered = activeCategory === 'wszystkie'
+    ? products
+    : products.filter(p => p.category === activeCategory)
 
   return (
     <section className="products" id="okazje">
       <div className="container">
         <span className="section-label">Tylko pojedyncze sztuki</span>
-        <h2 className="section-title">Okazje dnia</h2>
-        <div className="products-grid">
-          {products.map((p, i) => (
-            <div key={i} className={`product-card fade-up delay-${i * 2}`}>
-              <span className={`product-badge ${p.badgeClass}`}>{p.badge}</span>
-              <div className="product-img">
-                <img src={p.img} alt={p.name} />
-              </div>
-              <div className="product-body">
-                <div className="product-origin">{p.origin}</div>
-                <h3 className="product-name">{p.name}</h3>
-                <div className="product-pricing">
-                  <span className="price-old">{p.oldPrice}</span>
-                  <span className="price-new">{p.newPrice}</span>
-                  <span className="price-save">{p.save}</span>
+        <h2 className="section-title">Aktualna oferta</h2>
+
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '40px' }}>
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              style={{
+                padding: '9px 20px', borderRadius: '2px',
+                fontSize: '13px', fontWeight: 500, letterSpacing: '.04em',
+                cursor: 'pointer', transition: 'all .25s',
+                border: activeCategory === cat.id ? '1px solid var(--charcoal)' : '1px solid rgba(138,130,120,.3)',
+                background: activeCategory === cat.id ? 'var(--charcoal)' : 'transparent',
+                color: activeCategory === cat.id ? '#fff' : 'var(--stone)',
+              }}
+            >
+              {cat.label}
+              <span style={{ marginLeft: '6px', fontSize: '11px', opacity: .6 }}>
+                ({cat.id === 'wszystkie' ? products.length : products.filter(p => p.category === cat.id).length})
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="products-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+          {filtered.map((product, i) => {
+            const discount = calcDiscount(product.oldPrice, product.newPrice)
+            return (
+              <a
+                key={product.id}
+                href={`/produkt/${product.id}`}
+                className={`product-card fade-up delay-${(i % 3) * 2}`}
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+              >
+                <span className={`product-badge ${product.badgeClass}`}>{product.badge}</span>
+                <div className="product-img">
+                  <img src={product.images[0]} alt={product.fullName} />
                 </div>
-                <button className="product-btn">Zarezerwuj teraz</button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <a href="#" className="btn-primary btn-dark">
-            Zobacz wszystkie okazje <ArrowIcon />
-          </a>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ═══════ GALLERY ═══════
-function Gallery() {
-  const items = [
-    { img: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80', tag: 'Salon · Narożnik Milano', large: true },
-    { img: 'https://images.unsplash.com/photo-1615873968403-89e068629265?w=400&q=80', tag: 'Jadalnia' },
-    { img: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=80', tag: 'Sypialnia' },
-    { img: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400&q=80', tag: 'Sofa Premium' },
-    { img: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&q=80', tag: 'Krzesła tapicerowane' },
-    { img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80', tag: 'Komplet salonowy', large: true },
-  ]
-
-  return (
-    <section className="gallery" id="galeria">
-      <div className="container">
-        <span className="section-label">Nasze meble u klientów</span>
-        <h2 className="section-title">Galeria inspiracji</h2>
-        <div className="gallery-grid">
-          {items.map((item, i) => (
-            <div key={i} className={`gallery-item${item.large ? ' large' : ''}`}>
-              <img src={item.img} alt={item.tag} />
-              <span className="gallery-tag">{item.tag}</span>
-            </div>
-          ))}
+                <div className="product-body">
+                  <div className="product-origin">{product.categoryLabel}</div>
+                  <h3 className="product-name">{product.fullName}</h3>
+                  {product.dimensions && (
+                    <div style={{ fontSize: '12px', color: 'var(--stone)', marginBottom: '8px' }}>📐 {product.dimensions}</div>
+                  )}
+                  <div className="product-pricing">
+                    <span className="price-old">{formatPrice(product.oldPrice)}</span>
+                    <span className="price-new">{formatPrice(product.newPrice)}</span>
+                    <span className="price-save">{discount}</span>
+                  </div>
+                  <div className="product-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    Zobacz szczegóły <ArrowIcon />
+                  </div>
+                </div>
+              </a>
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-// ═══════ LOGISTICS ═══════
 function Logistics() {
   return (
     <section className="logistics">
@@ -251,14 +196,12 @@ function Logistics() {
   )
 }
 
-// ═══════ REVIEWS ═══════
 function Reviews() {
   const reviews = [
     { text: '„Kupiłam narożnik z ekspozycji za połowę ceny. Wygląda jak nowy, zero śladów użytkowania. Transport własny, panowie wnieśli na 3. piętro. Polecam!"', author: 'Katarzyna M.', date: 'Zielona Góra · 2 tygodnie temu' },
-    { text: '„Stół dębowy Bergen — jakość rewelacyjna, cena śmieszna. Przyjechałem obejrzeć osobiście, od razu zabrałem. Żona zachwycona."', author: 'Marcin W.', date: 'Nowa Sól · tydzień temu' },
+    { text: '„Stół — jakość rewelacyjna, cena śmieszna. Przyjechałem obejrzeć osobiście, od razu zabrałem. Żona zachwycona."', author: 'Marcin W.', date: 'Nowa Sól · tydzień temu' },
     { text: '„Trzeci raz kupuję w notoDOM Outlet. Łóżko, szafa i teraz komoda. Wszystko w idealnym stanie, a ceny 40-60% taniej niż w salonie."', author: 'Anna K.', date: 'Zielona Góra · 3 dni temu' },
   ]
-
   return (
     <section className="reviews">
       <div className="container">
@@ -279,7 +222,6 @@ function Reviews() {
   )
 }
 
-// ═══════ FOOTER ═══════
 function Footer() {
   return (
     <footer className="site-footer" id="kontakt">
@@ -291,10 +233,10 @@ function Footer() {
           </div>
           <div className="footer-col">
             <h4>Kategorie</h4>
-            <a href="#">Salon</a>
-            <a href="#">Jadalnia</a>
-            <a href="#">Sypialnia</a>
-            <a href="#">Wszystkie okazje</a>
+            <a href="#okazje">Narożniki</a>
+            <a href="#okazje">Stoły</a>
+            <a href="#okazje">Zestawy</a>
+            <a href="#okazje">Wszystkie okazje</a>
           </div>
           <div className="footer-col">
             <h4>Informacje</h4>
@@ -324,7 +266,6 @@ function Footer() {
   )
 }
 
-// ═══════ MAIN PAGE ═══════
 export default function HomePage() {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -334,13 +275,11 @@ export default function HomePage() {
           observer.unobserve(entry.target)
         }
       })
-    }, { threshold: 0.15 })
-
+    }, { threshold: 0.1 })
     document.querySelectorAll('.fade-up').forEach(el => {
       ;(el as HTMLElement).style.animationPlayState = 'paused'
       observer.observe(el)
     })
-
     return () => observer.disconnect()
   }, [])
 
@@ -350,9 +289,7 @@ export default function HomePage() {
       <Header />
       <Hero />
       <Trust />
-      <Categories />
       <Products />
-      <Gallery />
       <Logistics />
       <Reviews />
       <Footer />
