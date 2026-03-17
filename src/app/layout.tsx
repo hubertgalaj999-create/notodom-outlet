@@ -2,11 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'notoDOM Outlet – Ekskluzywne Meble w Niewyobrażalnych Cenach | Zielona Góra',
-  description: 'Końcówki kolekcji i modele poekspozycyjne od sprawdzonych producentów. Rabaty do -70%. Magazyn w Zielonej Górze, własny transport w woj. lubuskim. Działamy od 2000 roku.',
+  title: 'notoDOM Outlet - Wyprzedaż Mebli Kuchennych i Salonowych | Zielona Góra',
+  description: 'Ekskluzywne meble kuchenne, narożniki i stoły z ekspozycji. Rabaty do -70%! Sprawdź ofertę outletową notoDOM w Zielonej Górze. Własny transport i gwarancja.',
+  keywords: ['outlet meblowy Zielona Góra', 'meble z ekspozycji', 'tanie kuchnie na wymiar', 'wyprzedaż mebli kuchennych', 'narożniki outlet'],
   openGraph: {
-    title: 'notoDOM Outlet – Ekskluzywne Meble | Zielona Góra',
-    description: 'Meble premium z rabatami do -70%. Końcówki kolekcji, modele poekspozycyjne. Magazyn Zielona Góra.',
+    title: 'notoDOM Outlet – Wyprzedaż Mebli Premium do -70%',
+    description: 'Najlepsze okazje na meble z ekspozycji i końcówki kolekcji. Sprawdź ofertę online!',
     url: 'https://outlet.notodom.pl',
     siteName: 'notoDOM Outlet',
     locale: 'pl_PL',
