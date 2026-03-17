@@ -15,7 +15,7 @@ function TopBar() {
       <div className="container">
         <span>📍 Magazyn Zielona Góra</span>
         <span>🚚 Własny transport w woj. lubuskim</span>
-        <span>⭐ Działamy nieprzerwanie od 2000 roku</span>
+        <span>⭐ Działamy w branży meblowej od 2000 roku</span>
       </div>
     </div>
   )
@@ -39,23 +39,31 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="hero">
+   <section className="hero">
       <div className="container hero-content">
-        <span className="hero-badge fade-up">Outlet meblowy · Zielona Góra</span>
+        {/* Badge z lokalizacją - świetnie pod SEO lokalne */}
+        <span className="hero-badge fade-up">notoDOM Outlet meblowy · Zielona Góra</span>
+        
         <h1 className="fade-up delay-1">
-          Ekskluzywne Meble<br />
-          w <strong>Niewyobrażalnych Cenach.</strong><br />
-          Prosto z Magazynu.
+          notoDOM Outlet — Ekskluzywne <br />
+          <strong>Meble Kuchenne i Salonowe</strong><br />
+          z Ekspozycji do -70%.
         </h1>
+
         <p className="hero-sub fade-up delay-2">
-          Końcówki kolekcji i modele poekspozycyjne od sprawdzonych producentów.
-          Wykorzystujemy nasze 25-letnie doświadczenie na rynku, by dostarczyć Ci
-          jakość premium z rabatami do -70%.
+          Odkryj wyprzedaż mebli premium prosto z showroomu. Oferujemy markowe 
+          <strong> kuchnie na wymiar, narożniki, stoły i krzesła </strong> 
+          w niewyobrażalnych cenach. Wykorzystujemy nasze 25-letnie doświadczenie, 
+          by dostarczyć Ci jakość notoDOM w outletowym wydaniu.
         </p>
-        <a href="#okazje" className="btn-primary fade-up delay-3">
-          Zobacz dzisiejsze okazje
-          <ArrowIcon />
-        </a>
+
+        <div className="hero-actions fade-up delay-3">
+          <a href="#okazje" className="btn-primary">
+            Zobacz aktualne okazje
+            <ArrowIcon />
+          </a>
+          {/* Opcjonalnie dodaj drugi przycisk, jeśli masz ofertę na OLX/Allegro */}
+        </div>
       </div>
     </section>
   )
