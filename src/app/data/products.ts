@@ -77,15 +77,14 @@ export const products: Product[] = [
   { id: 'kamienny-stol', name: 'Stół Kamienny', fullName: 'Stół Kamienny', category: 'stoly', categoryLabel: 'Stoły', oldPrice: 9900, newPrice: 6900, images: ['/stol_kamienny.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
   { id: 'salvador-stol', name: 'Salvador', fullName: 'Stół Salvador', category: 'stoly', categoryLabel: 'Stoły', oldPrice: 2109, newPrice: 999, images: ['/salvador_stol.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', dimensions: '160–200×90 cm', available: true },
   { id: 'prince-stol', name: 'Prince', fullName: 'Stół Prince', category: 'stoly', categoryLabel: 'Stoły', oldPrice: 1359, newPrice: 900, images: ['/stol-prince.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Mega Okazja', badgeClass: 'badge-last', available: true },
-  // STOLIKI
-  { id: 'ditra-stolik', name: 'Ditra', fullName: 'Stolik Ditra', category: 'stoliki', categoryLabel: 'Stoliki', oldPrice: 499, newPrice: 260, images: ['/stolik_ditra.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
-  { id: 'elidoro-stolik', name: 'Elidoro Ara', fullName: 'Stolik Kamienny Elidoro Ara', category: 'stoliki', categoryLabel: 'Stoliki', oldPrice: 4689, newPrice: 2299, images: ['/stolik_elidoro.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
-  // ŁAWY
-  { id: 'gki-lawa', name: 'GKI Drewno', fullName: 'Ława GKI Drewno', category: 'lawy', categoryLabel: 'Ławy', oldPrice: 1499, newPrice: 699, images: ['/ława_ch.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
-  { id: 'tc221-lawa', name: 'TC.221', fullName: 'Ława TC.221', category: 'lawy', categoryLabel: 'Ławy', oldPrice: 1059, newPrice: 750, images: ['/stolik_tc221.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
-  { id: 'tt252-lawa', name: 'TT.252', fullName: 'Ława TT.252', category: 'lawy', categoryLabel: 'Ławy', oldPrice: 919, newPrice: 749, images: ['/stolik_tt.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
-  { id: 'balin-lawa', name: 'Balin', fullName: 'Ława Balin', category: 'lawy', categoryLabel: 'Ławy', oldPrice: 529, newPrice: 400, images: ['/ława-balin.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', dimensions: '110×60×40 cm', available: true },
-  { id: 'halmar-selena-lawa', name: 'Halmar Selena FI65', fullName: 'Ława Halmar Selena FI65', category: 'lawy', categoryLabel: 'Ławy', oldPrice: 799, newPrice: 529, images: ['/ława-halmar-selena.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  // STOLIKI I ŁAWY
+  { id: 'ditra-stolik', name: 'Ditra', fullName: 'Stolik Ditra', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 499, newPrice: 260, images: ['/stolik_ditra.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  { id: 'elidoro-stolik', name: 'Elidoro Ara', fullName: 'Stolik Kamienny Elidoro Ara', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 4689, newPrice: 2299, images: ['/stolik_elidoro.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  { id: 'gki-lawa', name: 'GKI Drewno', fullName: 'Ława GKI Drewno', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 1499, newPrice: 699, images: ['/ława_ch.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  { id: 'tc221-lawa', name: 'TC.221', fullName: 'Ława TC.221', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 1059, newPrice: 750, images: ['/stolik_tc221.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  { id: 'tt252-lawa', name: 'TT.252', fullName: 'Ława TT.252', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 919, newPrice: 749, images: ['/stolik_tt.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
+  { id: 'balin-lawa', name: 'Balin', fullName: 'Ława Balin', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 529, newPrice: 400, images: ['/ława-balin.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', dimensions: '110×60×40 cm', available: true },
+  { id: 'halmar-selena-lawa', name: 'Halmar Selena FI65', fullName: 'Ława Halmar Selena FI65', category: 'stoliki-i-lawy', categoryLabel: 'Stoliki i Ławy', oldPrice: 799, newPrice: 529, images: ['/ława-halmar-selena.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', available: true },
   // ŁÓŻKA
   { id: 'fiore-lozko', name: 'Fiore 06', fullName: 'Łóżko Fiore 06 160×200', category: 'lozka', categoryLabel: 'Łóżka', oldPrice: 6259, newPrice: 4599, images: ['/lozko_stokholm.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', dimensions: '160×200 cm', available: true },
   { id: 'preppy-lozko', name: 'Preppy', fullName: 'Łóżko Hilding Preppy 160×200', category: 'lozka', categoryLabel: 'Łóżka', oldPrice: 5600, newPrice: 2500, images: ['/lozko_preppy.jpg'], description: 'Opis produktu pojawi się wkrótce.', flaws: [], badge: 'Wyprzedaż', badgeClass: 'badge-expo', dimensions: '160×200 cm', available: true },
@@ -137,8 +136,7 @@ export const categories = [
   { id: 'fotele', label: 'Fotele' },
   { id: 'krzesla', label: 'Krzesła' },
   { id: 'stoly', label: 'Stoły' },
-  { id: 'stoliki', label: 'Stoliki' },
-  { id: 'lawy', label: 'Ławy' },
+  { id: 'stoliki-i-lawy', label: 'Stoliki i Ławy' },
   { id: 'lozka', label: 'Łóżka' },
   { id: 'materace', label: 'Materace' },
   { id: 'zestawy', label: 'Zestawy' },
