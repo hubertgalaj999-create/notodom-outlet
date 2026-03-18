@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { products, categories, formatPrice, calcDiscount } from './data/products'
 
 const ArrowIcon = () => (
@@ -41,7 +42,6 @@ function Hero() {
   return (
    <section className="hero">
       <div className="container hero-content">
-        {/* Badge z lokalizacją - świetnie pod SEO lokalne */}
         <span className="hero-badge fade-up">notoDOM Outlet meblowy · Zielona Góra</span>
         
         <h1 className="fade-up delay-1">
@@ -62,7 +62,6 @@ function Hero() {
             Zobacz aktualne okazje
             <ArrowIcon />
           </a>
-          {/* Opcjonalnie dodaj drugi przycisk, jeśli masz ofertę na OLX/Allegro */}
         </div>
       </div>
     </section>
@@ -150,8 +149,16 @@ function Products() {
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
                 <span className={`product-badge ${product.badgeClass}`}>{product.badge}</span>
-                <div className="product-img">
-                  <img src={product.images[0]} alt={product.fullName} />
+                <div className="product-img" style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                  <Image
+                    src={product.images[0]}
+                    alt={product.fullName}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: 'cover' }}
+                    loading={i < 6 ? 'eager' : 'lazy'}
+                    priority={i < 3}
+                  />
                 </div>
                 <div className="product-body">
                   <div className="product-origin">{product.categoryLabel}</div>

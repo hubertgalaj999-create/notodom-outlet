@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { products, formatPrice, calcDiscount } from '../../data/products'
 
@@ -65,11 +66,15 @@ export default function ProductPage() {
             cursor: 'zoom-out',
           }}
         >
-          <img
-            src={product.images[activeImg]}
-            alt={product.fullName}
-            style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }}
-          />
+          <div style={{ position: 'relative', maxWidth: '90vw', maxHeight: '90vh', width: '900px', height: '675px' }}>
+            <Image
+              src={product.images[activeImg]}
+              alt={product.fullName}
+              fill
+              style={{ objectFit: 'contain' }}
+              sizes="90vw"
+            />
+          </div>
           <button
             onClick={() => setLightbox(false)}
             style={{
@@ -143,10 +148,13 @@ export default function ProductPage() {
                 }}
                 onClick={() => setLightbox(true)}
               >
-                <img
+                <Image
                   src={product.images[activeImg]}
                   alt={product.fullName}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'cover' }}
+                  priority
                 />
                 {product.badge && (
                   <span className={`product-badge ${product.badgeClass}`} style={{ top: '16px', left: '16px' }}>
@@ -171,12 +179,19 @@ export default function ProductPage() {
                       key={i}
                       onClick={() => setActiveImg(i)}
                       style={{
+                        position: 'relative',
                         width: '80px', height: '60px', borderRadius: '3px', overflow: 'hidden',
                         cursor: 'pointer', border: i === activeImg ? '2px solid var(--gold)' : '2px solid transparent',
                         transition: 'border-color .2s',
                       }}
                     >
-                      <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <Image
+                        src={img}
+                        alt=""
+                        fill
+                        sizes="80px"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </div>
                   ))}
                 </div>
