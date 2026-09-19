@@ -332,7 +332,7 @@ export default function ProductPage() {
                 paddingTop: '24px', borderTop: '1px solid rgba(138,130,120,.15)',
                 flexWrap: 'wrap',
               }}>
-                {['🛡️ Pełna gwarancja', '🚚 Własny transport', '📍 Odbiór osobisty'].map(item => (
+                {['🚚 Własny transport', '📍 Odbiór osobisty', '🤝 Kontakt bezpośredni'].map(item => (
                   <span key={item} style={{ fontSize: '12px', color: 'var(--stone)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     {item}
                   </span>

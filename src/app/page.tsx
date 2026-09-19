@@ -6,7 +6,7 @@ import { products, categories, formatPrice, calcDiscount } from './data/products
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
-    <path d="M5 12h14M12 5l7 7-7 7"/>
+    <path d="M5 12h14M12 5l7 7-7 7" />
   </svg>
 )
 
@@ -14,9 +14,11 @@ function TopBar() {
   return (
     <div className="top-bar">
       <div className="container">
-        <span>📍 Magazyn Zielona Góra</span>
+        <a href="tel:+48887535955">📞 887 535 955</a>
+        <a href="https://maps.google.com/?q=ul.+Sienkiewicza+9,+Zielona+Góra" target="_blank" rel="noopener noreferrer">
+          📍 ul. Sienkiewicza 9, Zielona Góra
+        </a>
         <span>🚚 Własny transport w woj. lubuskim</span>
-        <span>⭐ Działamy w branży meblowej od 2000 roku</span>
       </div>
     </div>
   )
@@ -40,10 +42,10 @@ function Header() {
 
 function Hero() {
   return (
-   <section className="hero">
+    <section className="hero">
       <div className="container hero-content">
         <span className="hero-badge fade-up">notoDOM Outlet meblowy · Zielona Góra</span>
-        
+
         <h1 className="fade-up delay-1">
           notoDOM Outlet — Ekskluzywne <br />
           <strong>Meble Kuchenne i Salonowe</strong><br />
@@ -51,9 +53,9 @@ function Hero() {
         </h1>
 
         <p className="hero-sub fade-up delay-2">
-          Odkryj wyprzedaż mebli premium prosto z showroomu. Oferujemy markowe 
-          <strong> kuchnie na wymiar, narożniki, stoły i krzesła </strong> 
-          w niewyobrażalnych cenach. Wykorzystujemy nasze 25-letnie doświadczenie, 
+          Odkryj wyprzedaż mebli premium prosto z showroomu. Oferujemy markowe
+          <strong> kuchnie na wymiar, narożniki, stoły i krzesła </strong>
+          w niewyobrażalnych cenach. Wykorzystujemy nasze 25-letnie doświadczenie,
           by dostarczyć Ci jakość notoDOM w outletowym wydaniu.
         </p>
 
@@ -71,19 +73,19 @@ function Hero() {
 function Trust() {
   const items = [
     {
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
       title: 'Od 2000 roku na rynku',
       text: 'Znamy branżę od podszewki. Przez ćwierć wieku wyselekcjonowaliśmy dla Ciebie wyłącznie bezawaryjnych i sprawdzonych producentów.',
     },
     {
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>,
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>,
       title: 'Radykalna Szczerość',
       text: 'Nie kupujesz kota w worku. Jeśli mebel ma jakąkolwiek rysę potargową, zobaczysz ją na wyraźnym zdjęciu makro.',
     },
     {
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      title: 'Pełna Gwarancja',
-      text: 'Niska cena nie oznacza braku ochrony. Wszystkie nasze meble outletowe są w pełni użyteczne i objęte pełną opieką gwarancyjną.',
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
+      title: 'Osobisty Kontakt',
+      text: 'Każdy mebel możesz obejrzeć na żywo przed zakupem. Zero formularzy i pośredników — dzwonisz, przyjeżdżasz, decydujesz.',
     },
   ]
   return (
@@ -155,7 +157,7 @@ function Products() {
                     alt={product.fullName}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'contain' }}
                     loading={i < 6 ? 'eager' : 'lazy'}
                     priority={i < 3}
                   />
@@ -193,14 +195,14 @@ function Logistics() {
         <div className="logistics-grid">
           <div className="logistics-card">
             <div className="logistics-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             </div>
             <h3>Odbiór Osobisty</h3>
             <p>Zarezerwuj mebel online, przyjedź do naszego magazynu w Zielonej Górze, obejrzyj go na żywo i dopiero wtedy podejmij ostateczną decyzję. Zero ryzyka.</p>
           </div>
           <div className="logistics-card">
             <div className="logistics-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m10 0H3m10 0h2m0 0a1 1 0 011-1V8h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V15a1 1 0 01-1 1h-1"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10m10 0H3m10 0h2m0 0a1 1 0 011-1V8h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V15a1 1 0 01-1 1h-1" /></svg>
             </div>
             <h3>Nasz Własny Transport</h3>
             <p>Na terenie woj. lubuskiego meble wozimy własną flotą. Żadnych zewnętrznych sortowni, rzucania paczkami i uszkodzeń w transporcie.</p>
@@ -262,22 +264,53 @@ function Footer() {
           </div>
           <div className="footer-col">
             <h4>Kontakt</h4>
-            <a href="#">📍 ul. Sienkiewicza 9, Zielona Góra</a>
+            <a href="https://maps.google.com/?q=ul.+Sienkiewicza+9,+Zielona+Góra" target="_blank" rel="noopener noreferrer">
+              📍 ul. Sienkiewicza 9, Zielona Góra
+            </a>
             <a href="tel:+48887535955">📞 887 535 955</a>
             <a href="mailto:outlet@notodom.pl">✉️ outlet@notodom.pl</a>
             <a href="#">🕐 Pon–Pt: 9:00–17:00</a>
           </div>
         </div>
+
+        <div style={{ borderRadius: '4px', overflow: 'hidden', marginBottom: '32px', border: '1px solid rgba(255,255,255,.1)' }}>
+          <iframe
+            src="https://www.google.com/maps?q=ul.+Sienkiewicza+9,+Zielona+Góra&output=embed"
+            width="100%"
+            height="220"
+            style={{ border: 0, display: 'block' }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+
         <div className="footer-bottom">
           <span>© 2025 notoDOM Outlet. Wszystkie prawa zastrzeżone.</span>
           <div className="footer-badges">
             <span>🔒 Bezpieczne płatności</span>
             <span>↩️ 14 dni na zwrot</span>
-            <span>🛡️ Pełna gwarancja</span>
           </div>
         </div>
       </div>
     </footer>
+  )
+}
+
+function StickyCTA() {
+  return (
+    <div className="sticky-cta">
+      <a href="tel:+48887535955" className="sticky-cta-btn sticky-cta-call">
+        📞 Zadzwoń
+      </a>
+      <a
+        href="https://maps.google.com/?q=ul.+Sienkiewicza+9,+Zielona+Góra"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="sticky-cta-btn sticky-cta-map"
+      >
+        📍 Trasa
+      </a>
+    </div>
   )
 }
 
@@ -286,13 +319,13 @@ export default function HomePage() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          ;(entry.target as HTMLElement).style.animationPlayState = 'running'
+          ; (entry.target as HTMLElement).style.animationPlayState = 'running'
           observer.unobserve(entry.target)
         }
       })
     }, { threshold: 0.1 })
     document.querySelectorAll('.fade-up').forEach(el => {
-      ;(el as HTMLElement).style.animationPlayState = 'paused'
+      ; (el as HTMLElement).style.animationPlayState = 'paused'
       observer.observe(el)
     })
     return () => observer.disconnect()
@@ -307,6 +340,7 @@ export default function HomePage() {
       <Products />
       <Logistics />
       <Reviews />
+      <StickyCTA />
       <Footer />
     </>
   )

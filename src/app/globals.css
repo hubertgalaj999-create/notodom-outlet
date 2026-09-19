@@ -965,3 +965,45 @@ a {
     text-align: center
   }
 }
+
+/* ════════ STICKY MOBILE CTA ════════ */
+.sticky-cta {
+  display: none;
+}
+
+@media(max-width:640px) {
+  .sticky-cta {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, .15);
+  }
+
+  .sticky-cta-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: #fff;
+  }
+
+  .sticky-cta-call {
+    background: var(--gold)
+  }
+
+  .sticky-cta-map {
+    background: var(--charcoal)
+  }
+
+  .site-footer {
+    padding-bottom: 80px
+  }
+}
