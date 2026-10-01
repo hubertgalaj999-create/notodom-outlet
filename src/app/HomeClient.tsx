@@ -7,6 +7,27 @@ import { products as allProducts, categories, formatPrice, calcDiscount } from '
 // Sprzedane (available: false) mają tylko własną kartę – nie trafiają na listę, do filtrów ani liczników.
 const products = allProducts.filter(p => p.available)
 
+// Sekcja „Sprzedane w outlecie”: maks. 8 sprzedanych ze zdjęciem, najpierw po jednym z każdej kategorii,
+// resztę dopełniają kolejne wpisy; wyświetlane w kolejności z pliku danych.
+const SOLD_MAX = 8
+const soldShowcase = (() => {
+  const sold = allProducts.filter(p => !p.available && p.images.length > 0)
+  const picked = new Set<string>()
+  const seenCategories = new Set<string>()
+  for (const p of sold) {
+    if (picked.size >= SOLD_MAX) break
+    if (!seenCategories.has(p.category)) {
+      seenCategories.add(p.category)
+      picked.add(p.id)
+    }
+  }
+  for (const p of sold) {
+    if (picked.size >= SOLD_MAX) break
+    picked.add(p.id)
+  }
+  return sold.filter(p => picked.has(p.id))
+})()
+
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -122,7 +143,7 @@ function Products() {
         <h2 className="section-title">Aktualna oferta</h2>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '40px' }}>
-          {categories.map(cat => (
+          {categories.filter(cat => cat.id === 'wszystkie' || products.some(p => p.category === cat.id)).map(cat => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
@@ -183,6 +204,44 @@ function Products() {
               </a>
             )
           })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SoldShowcase() {
+  if (soldShowcase.length === 0) return null
+  return (
+    <section style={{ padding: '64px 0', background: 'var(--cream-light)' }}>
+      <div className="container">
+        <span className="section-label">Znalazły już nowy dom</span>
+        <h2 className="section-title">Sprzedane w outlecie</h2>
+        <div className="sold-grid">
+          {soldShowcase.map(product => (
+            <a
+              key={product.id}
+              href={`/produkt/${product.id}`}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+            >
+              <div style={{
+                position: 'relative', aspectRatio: '4/3', overflow: 'hidden',
+                borderRadius: '4px', background: '#fff',
+              }}>
+                <Image
+                  src={product.images[0]}
+                  alt={product.fullName}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 200px"
+                  style={{ objectFit: 'contain', opacity: .85 }}
+                  loading="lazy"
+                />
+              </div>
+              <div style={{ fontSize: '13px', lineHeight: 1.4, color: 'var(--charcoal)', marginTop: '8px' }}>
+                {product.fullName}
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>
@@ -341,6 +400,7 @@ export default function HomeClient() {
       <Hero />
       <Trust />
       <Products />
+      <SoldShowcase />
       <Logistics />
       <Reviews />
       <StickyCTA />
