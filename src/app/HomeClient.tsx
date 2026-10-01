@@ -277,32 +277,6 @@ function Logistics() {
   )
 }
 
-function Reviews() {
-  const reviews = [
-    { text: '„Kupiłam narożnik z ekspozycji za połowę ceny. Wygląda jak nowy, zero śladów użytkowania. Transport własny, panowie wnieśli na 3. piętro. Polecam!"', author: 'Katarzyna M.', date: 'Zielona Góra · 2 tygodnie temu' },
-    { text: '„Stół — jakość rewelacyjna, cena śmieszna. Przyjechałem obejrzeć osobiście, od razu zabrałem. Żona zachwycona."', author: 'Marcin W.', date: 'Nowa Sól · tydzień temu' },
-    { text: '„Trzeci raz kupuję w notoDOM Outlet. Łóżko, szafa i teraz komoda. Wszystko w idealnym stanie, a ceny 40-60% taniej niż w salonie."', author: 'Anna K.', date: 'Zielona Góra · 3 dni temu' },
-  ]
-  return (
-    <section className="reviews">
-      <div className="container">
-        <span className="section-label">Co mówią klienci</span>
-        <h2 className="section-title">Opinie naszych klientów</h2>
-        <div className="reviews-grid">
-          {reviews.map((r, i) => (
-            <div key={i} className={`review-card fade-up delay-${i * 2}`}>
-              <div className="review-stars">★★★★★</div>
-              <p className="review-text">{r.text}</p>
-              <div className="review-author">{r.author}</div>
-              <div className="review-date">{r.date}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function Footer() {
   return (
     <footer className="site-footer" id="kontakt">
@@ -399,7 +373,6 @@ export default function HomeClient() {
       <Products />
       <SoldShowcase />
       <Logistics />
-      <Reviews />
       <StickyCTA />
       <Footer />
     </>
