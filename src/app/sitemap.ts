@@ -6,6 +6,7 @@ import { SITE_URL } from './lib/seo'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/` },
+    { url: `${SITE_URL}/polityka-prywatnosci` },
     ...products.filter(p => p.available).map(p => ({ url: `${SITE_URL}/produkt/${p.id}` })),
   ]
 }

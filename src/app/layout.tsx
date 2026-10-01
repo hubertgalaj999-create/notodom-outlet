@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import Script from 'next/script'
+import CookieBanner from './components/CookieBanner'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -37,21 +38,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pl" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body>
-        {children}
-
-        {/* Google Analytics (GA4) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-HGZW20QJTT"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
+        {/* Tryb zgody (podstawowy): domyślnie wszystko odrzucone, bez ładowania gtag.js */}
+        <Script id="consent-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-HGZW20QJTT');
+            gtag('consent', 'default', {
+              ad_storage: 'denied',
+              analytics_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied'
+            });
           `}
         </Script>
+
+        {children}
+
+        {/* Google Analytics (GA4): gtag.js ładuje CookieBanner dopiero po zgodzie */}
+        <CookieBanner />
       </body>
     </html>
   )

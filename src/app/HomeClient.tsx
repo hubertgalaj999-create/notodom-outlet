@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import MapEmbed from './components/MapEmbed'
+import CookieSettingsLink from './components/CookieSettingsLink'
 import { products as allProducts, categories, formatPrice, calcDiscount } from './data/products'
 
 // Sprzedane (available: false) mają tylko własną kartę – nie trafiają na listę, do filtrów ani liczników.
@@ -323,6 +325,8 @@ function Footer() {
             <a href="#">Dostawa i transport</a>
             <a href="#">Gwarancja i zwroty</a>
             <a href="#">Regulamin</a>
+            <a href="/polityka-prywatnosci">Polityka prywatności</a>
+            <CookieSettingsLink style={{ display: 'block', fontSize: '13px', color: 'rgba(255,255,255,.6)', marginBottom: '10px' }} />
           </div>
           <div className="footer-col">
             <h4>Kontakt</h4>
@@ -336,14 +340,7 @@ function Footer() {
         </div>
 
         <div style={{ borderRadius: '4px', overflow: 'hidden', marginBottom: '32px', border: '1px solid rgba(255,255,255,.1)' }}>
-          <iframe
-            src="https://www.google.com/maps?q=ul.+Sienkiewicza+9,+Zielona+Góra&output=embed"
-            width="100%"
-            height="220"
-            style={{ border: 0, display: 'block' }}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <MapEmbed />
         </div>
 
         <div className="footer-bottom">

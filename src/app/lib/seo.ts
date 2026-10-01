@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import type { Product } from '../data/products'
 
 export const SITE_URL = 'https://outlet.notodom.pl'
@@ -64,4 +65,18 @@ export function productDescription(p: Product): string {
     ['Zobacz zdjęcia i zarezerwuj.', 'Zadzwoń i zarezerwuj.'],
   )
   return fitDescription(parts)
+}
+
+// Metadane zwykłej podstrony outletu (tytuł ≤ 60, opis 130–155 znaków, canonical).
+export function pageMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
+  if (title.length > TITLE_MAX) throw new Error(`Tytuł strony ${path} ma ${title.length} znaków (maks. ${TITLE_MAX})`)
+  if (description.length < DESC_MIN || description.length > DESC_MAX) {
+    throw new Error(`Opis strony ${path} ma ${description.length} znaków (wymagane ${DESC_MIN}–${DESC_MAX})`)
+  }
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: path },
+    openGraph: { title, description, url: path },
+  }
 }

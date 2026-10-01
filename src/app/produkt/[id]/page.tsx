@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { products, formatPrice, calcDiscount } from '../../data/products'
 import { productTitle, productDescription } from '../../lib/seo'
 import ProductGallery from './ProductGallery'
+import CookieSettingsLink from '../../components/CookieSettingsLink'
 
 type Params = { params: { id: string } }
 
@@ -349,6 +350,11 @@ export default function ProductPage({ params }: Params) {
             notoDOM <em style={{ color: 'var(--gold)' }}>Outlet</em>
           </div>
           <p>ul. Sienkiewicza 9, Zielona Góra · 📞 887 535 955 · outlet@notodom.pl</p>
+          <p style={{ marginTop: '12px', fontSize: '12px' }}>
+            <a href="/polityka-prywatnosci" style={{ color: 'rgba(255,255,255,.6)' }}>Polityka prywatności</a>
+            {' · '}
+            <CookieSettingsLink />
+          </p>
         </div>
       </footer>
     </div>
