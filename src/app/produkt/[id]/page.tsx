@@ -1,12 +1,38 @@
-'use client'
-
-import { useState } from 'react'
+import type { Metadata } from 'next'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { products, formatPrice, calcDiscount } from '../../data/products'
+import { productTitle, productDescription } from '../../lib/seo'
+import ProductGallery from './ProductGallery'
+
+type Params = { params: { id: string } }
+
+export const dynamicParams = false
+
+export function generateStaticParams() {
+  return products.map(p => ({ id: p.id }))
+}
+
+export function generateMetadata({ params }: Params): Metadata {
+  const product = products.find(p => p.id === params.id)
+  if (!product) return {}
+
+  const title = productTitle(product)
+  const description = productDescription(product)
+  const url = `/produkt/${product.id}`
+
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url },
+    twitter: { card: 'summary_large_image', title, description },
+    ...(product.available ? {} : { robots: { index: false, follow: true } }),
+  }
+}
 
 const ArrowIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
     <path d="M5 12h14M12 5l7 7-7 7" />
   </svg>
 )
@@ -29,332 +55,302 @@ const MailIcon = () => (
   </svg>
 )
 
-const ZoomIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="20" height="20">
-    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-  </svg>
-)
-
-export default function ProductPage() {
-  const params = useParams()
+export default function ProductPage({ params }: Params) {
   const product = products.find(p => p.id === params.id)
-  const [activeImg, setActiveImg] = useState(0)
-  const [lightbox, setLightbox] = useState(false)
+  if (!product) notFound()
 
-  if (!product) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cream)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', marginBottom: '16px' }}>Produkt nie znaleziony</h1>
-          <a href="/" style={{ color: 'var(--gold)' }}>← Wróć do strony głównej</a>
-        </div>
-      </div>
-    )
-  }
-
+  const sold = !product.available
   const discount = calcDiscount(product.oldPrice, product.newPrice)
+  const similar = sold
+    ? products.filter(p => p.available && p.category === product.category && p.id !== product.id).slice(0, 3)
+    : []
 
   return (
-    <>
-      {/* LIGHTBOX */}
-      {lightbox && (
-        <div
-          onClick={() => setLightbox(false)}
+    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+
+      {/* HEADER */}
+      <header className="site-header">
+        <div className="container header-inner">
+          <a href="/" className="logo">notoDOM <em>Outlet</em></a>
+          <nav className="nav-links">
+            <a href="/#kategorie">Salon</a>
+            <a href="/#kategorie">Jadalnia</a>
+            <a href="/#kategorie">Sypialnia</a>
+            <a href="/#kontakt" className="nav-cta">Kontakt</a>
+          </nav>
+        </div>
+      </header>
+
+      {/* BREADCRUMB */}
+      <div style={{ background: 'var(--cream-light)', borderBottom: '1px solid rgba(138,130,120,.12)', padding: '12px 0' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--stone)' }}>
+          <a href="/" style={{ color: 'var(--stone)', transition: 'color .2s' }}>Strona główna</a>
+          <span>›</span>
+          <a href="/#okazje" style={{ color: 'var(--stone)' }}>Okazje</a>
+          <span>›</span>
+          <span style={{ color: 'var(--charcoal)' }}>{product.fullName}</span>
+        </div>
+      </div>
+
+      {/* BACK BUTTON */}
+      <div className="container" style={{ paddingTop: '28px' }}>
+        <a
+          href="/#okazje"
           style={{
-            position: 'fixed', inset: 0, background: 'rgba(0,0,0,.92)',
-            zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'zoom-out',
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            fontSize: '13px', fontWeight: 500, color: 'var(--stone)',
+            transition: 'color .2s', letterSpacing: '.02em',
           }}
         >
-          <div style={{ position: 'relative', maxWidth: '90vw', maxHeight: '90vh', width: '900px', height: '675px' }}>
-            <Image
-              src={product.images[activeImg]}
-              alt={product.fullName}
-              fill
-              style={{ objectFit: 'contain' }}
-              sizes="90vw"
-            />
-          </div>
-          <button
-            onClick={() => setLightbox(false)}
-            style={{
-              position: 'absolute', top: '24px', right: '24px',
-              background: 'rgba(255,255,255,.1)', border: 'none', color: '#fff',
-              width: '44px', height: '44px', borderRadius: '50%', cursor: 'pointer',
-              fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-          >✕</button>
-        </div>
-      )}
+          <BackIcon /> Wróć do oferty
+        </a>
+      </div>
 
-      <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+      {/* MAIN CONTENT */}
+      <div className="container" style={{ padding: '32px 24px 80px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '64px',
+          alignItems: 'start',
+        }}>
 
-        {/* HEADER */}
-        <header className="site-header">
-          <div className="container header-inner">
-            <a href="/" className="logo">notoDOM <em>Outlet</em></a>
-            <nav className="nav-links">
-              <a href="/#kategorie">Salon</a>
-              <a href="/#kategorie">Jadalnia</a>
-              <a href="/#kategorie">Sypialnia</a>
-              <a href="/#kontakt" className="nav-cta">Kontakt</a>
-            </nav>
-          </div>
-        </header>
+          <ProductGallery
+            images={product.images}
+            alt={product.fullName}
+            badge={sold ? 'Sprzedane' : product.badge}
+            badgeClass={sold ? 'badge-expo' : product.badgeClass}
+          />
 
-        {/* BREADCRUMB */}
-        <div style={{ background: 'var(--cream-light)', borderBottom: '1px solid rgba(138,130,120,.12)', padding: '12px 0' }}>
-          <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--stone)' }}>
-            <a href="/" style={{ color: 'var(--stone)', transition: 'color .2s' }}>Strona główna</a>
-            <span>›</span>
-            <a href="/#okazje" style={{ color: 'var(--stone)' }}>Okazje</a>
-            <span>›</span>
-            <span style={{ color: 'var(--charcoal)' }}>{product.fullName}</span>
-          </div>
-        </div>
+          {/* DETAILS */}
+          <div>
+            <div style={{ marginBottom: '8px' }}>
+              <span style={{
+                fontSize: '11px', fontWeight: 600, letterSpacing: '.1em',
+                textTransform: 'uppercase', color: 'var(--gold)',
+              }}>
+                {product.categoryLabel} · Model poekspozycyjny
+              </span>
+            </div>
 
-        {/* BACK BUTTON */}
-        <div className="container" style={{ paddingTop: '28px' }}>
-          <a
-            href="/#okazje"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              fontSize: '13px', fontWeight: 500, color: 'var(--stone)',
-              transition: 'color .2s', letterSpacing: '.02em',
-            }}
-          >
-            <BackIcon /> Wróć do oferty
-          </a>
-        </div>
+            <h1 style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              fontWeight: 400, lineHeight: 1.15,
+              color: 'var(--charcoal)', marginBottom: '24px',
+            }}>
+              {product.fullName}
+            </h1>
 
-        {/* MAIN CONTENT */}
-        <div className="container" style={{ padding: '32px 24px 80px' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '64px',
-            alignItems: 'start',
-          }}>
-
-            {/* GALLERY */}
-            <div>
-              {/* Main image */}
-              <div
-                style={{
-                  position: 'relative', borderRadius: '4px', overflow: 'hidden',
-                  background: '#fff', aspectRatio: '4/3',
-                  boxShadow: '0 4px 32px rgba(0,0,0,.08)',
-                  cursor: 'zoom-in',
-                }}
-                onClick={() => setLightbox(true)}
-              >
-                <Image
-                  src={product.images[activeImg]}
-                  alt={product.fullName}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'contain' }}
-                  priority
-                />
-                {product.badge && (
-                  <span className={`product-badge ${product.badgeClass}`} style={{ top: '16px', left: '16px' }}>
-                    {product.badge}
-                  </span>
-                )}
-                <div style={{
-                  position: 'absolute', bottom: '12px', right: '12px',
-                  background: 'rgba(255,255,255,.9)', borderRadius: '50%',
-                  width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--charcoal)',
+            {sold ? (
+              <>
+                {/* SOLD BANNER */}
+                <div role="status" style={{
+                  background: 'var(--charcoal)', color: '#fff',
+                  borderRadius: '4px', padding: '20px 24px', marginBottom: '24px',
                 }}>
-                  <ZoomIcon />
+                  <div style={{
+                    fontSize: '14px', fontWeight: 700, letterSpacing: '.12em',
+                    textTransform: 'uppercase', marginBottom: '6px',
+                  }}>
+                    Sprzedane
+                  </div>
+                  <p style={{ fontSize: '14px', lineHeight: 1.6, color: 'rgba(255,255,255,.75)' }}>
+                    Ten egzemplarz znalazł już nowego właściciela.{' '}
+                    {similar.length > 0 ? 'Zobacz podobne meble dostępne teraz w outlecie.' : 'Zobacz meble dostępne teraz w outlecie.'}
+                  </p>
                 </div>
-              </div>
 
-              {/* Thumbnails */}
-              {product.images.length > 1 && (
-                <div style={{ display: 'flex', gap: '10px', marginTop: '12px', flexWrap: 'wrap' }}>
-                  {product.images.map((img, i) => (
-                    <div
-                      key={i}
-                      onClick={() => setActiveImg(i)}
-                      style={{
-                        position: 'relative',
-                        width: '80px', height: '60px', borderRadius: '3px', overflow: 'hidden',
-                        cursor: 'pointer', border: i === activeImg ? '2px solid var(--gold)' : '2px solid transparent',
-                        transition: 'border-color .2s',
-                      }}
-                    >
-                      <Image
-                        src={img}
-                        alt=""
-                        fill
-                        sizes="80px"
-                        style={{ objectFit: 'contain' }}
-                      />
+                <a href="/#okazje" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  Zobacz aktualną ofertę <ArrowIcon />
+                </a>
+              </>
+            ) : (
+              <>
+                {product.dimensions && (
+                  <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '8px',
+                    background: 'rgba(138,130,120,.1)', padding: '6px 14px',
+                    borderRadius: '2px', marginBottom: '24px',
+                    fontSize: '13px', color: 'var(--stone)',
+                  }}>
+                    📐 {product.dimensions}
+                  </div>
+                )}
+
+                {/* PRICING */}
+                <div style={{
+                  background: '#fff', borderRadius: '4px', padding: '24px',
+                  boxShadow: '0 2px 16px rgba(0,0,0,.06)', marginBottom: '24px',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '15px', color: 'var(--stone)', textDecoration: 'line-through' }}>
+                      {formatPrice(product.oldPrice)}
+                    </span>
+                    <span style={{
+                      background: 'var(--red)', color: '#fff',
+                      fontSize: '12px', fontWeight: 700, padding: '3px 8px',
+                      borderRadius: '2px', letterSpacing: '.04em',
+                    }}>
+                      {discount}
+                    </span>
+                  </div>
+                  <div style={{
+                    fontFamily: 'Cormorant Garamond, serif',
+                    fontSize: '2.6rem', fontWeight: 500,
+                    color: 'var(--charcoal)', lineHeight: 1,
+                  }}>
+                    {formatPrice(product.newPrice)}
+                  </div>
+                  <div style={{ fontSize: '12px', color: 'var(--stone)', marginTop: '8px' }}>
+                    Najniższa cena z 30 dni przed obniżką
+                  </div>
+                </div>
+
+                {/* DESCRIPTION */}
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    fontSize: '13px', fontWeight: 600, letterSpacing: '.06em',
+                    textTransform: 'uppercase', color: 'var(--stone)', marginBottom: '12px',
+                  }}>
+                    Opis produktu
+                  </h3>
+                  <p style={{ fontSize: '15px', lineHeight: 1.7, color: 'var(--charcoal)' }}>
+                    {product.description}
+                  </p>
+                </div>
+
+                {/* FLAWS */}
+                <div style={{ marginBottom: '32px' }}>
+                  <h3 style={{
+                    fontSize: '13px', fontWeight: 600, letterSpacing: '.06em',
+                    textTransform: 'uppercase', color: 'var(--stone)', marginBottom: '12px',
+                  }}>
+                    Stan i ewentualne wady
+                  </h3>
+                  {product.flaws.length === 0 ? (
+                    <div style={{
+                      background: 'rgba(46,125,86,.08)', border: '1px solid rgba(46,125,86,.2)',
+                      borderRadius: '3px', padding: '14px 16px',
+                      fontSize: '14px', color: 'var(--green)',
+                    }}>
+                      ✓ Informacje o stanie produktu pojawią się wkrótce
                     </div>
+                  ) : (
+                    <ul style={{ paddingLeft: '16px' }}>
+                      {product.flaws.map((flaw, i) => (
+                        <li key={i} style={{ fontSize: '14px', color: 'var(--charcoal)', marginBottom: '6px', lineHeight: 1.5 }}>
+                          {flaw}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* CTA BUTTONS */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <a
+                    href="tel:+48887535955"
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                      background: 'var(--charcoal)', color: '#fff',
+                      padding: '16px 24px', borderRadius: '2px',
+                      fontSize: '14px', fontWeight: 600, letterSpacing: '.04em',
+                      textTransform: 'uppercase', transition: 'background .3s',
+                    }}
+                  >
+                    <PhoneIcon /> Zadzwoń i zarezerwuj
+                  </a>
+                  <a
+                    href="mailto:outlet@notodom.pl"
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                      background: 'transparent', color: 'var(--charcoal)',
+                      padding: '15px 24px', borderRadius: '2px',
+                      fontSize: '14px', fontWeight: 500, letterSpacing: '.04em',
+                      border: '1px solid rgba(28,28,30,.2)', transition: 'all .3s',
+                    }}
+                  >
+                    <MailIcon /> Zapytaj e-mailem
+                  </a>
+                </div>
+
+                {/* TRUST */}
+                <div style={{
+                  display: 'flex', gap: '16px', marginTop: '24px',
+                  paddingTop: '24px', borderTop: '1px solid rgba(138,130,120,.15)',
+                  flexWrap: 'wrap',
+                }}>
+                  {['🚚 Własny transport', '📍 Odbiór osobisty', '🤝 Kontakt bezpośredni'].map(item => (
+                    <span key={item} style={{ fontSize: '12px', color: 'var(--stone)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      {item}
+                    </span>
                   ))}
                 </div>
-              )}
-            </div>
-
-            {/* DETAILS */}
-            <div>
-              <div style={{ marginBottom: '8px' }}>
-                <span style={{
-                  fontSize: '11px', fontWeight: 600, letterSpacing: '.1em',
-                  textTransform: 'uppercase', color: 'var(--gold)',
-                }}>
-                  {product.categoryLabel} · Model poekspozycyjny
-                </span>
-              </div>
-
-              <h1 style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                fontWeight: 400, lineHeight: 1.15,
-                color: 'var(--charcoal)', marginBottom: '24px',
-              }}>
-                {product.fullName}
-              </h1>
-
-              {product.dimensions && (
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '8px',
-                  background: 'rgba(138,130,120,.1)', padding: '6px 14px',
-                  borderRadius: '2px', marginBottom: '24px',
-                  fontSize: '13px', color: 'var(--stone)',
-                }}>
-                  📐 {product.dimensions}
-                </div>
-              )}
-
-              {/* PRICING */}
-              <div style={{
-                background: '#fff', borderRadius: '4px', padding: '24px',
-                boxShadow: '0 2px 16px rgba(0,0,0,.06)', marginBottom: '24px',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '15px', color: 'var(--stone)', textDecoration: 'line-through' }}>
-                    {formatPrice(product.oldPrice)}
-                  </span>
-                  <span style={{
-                    background: 'var(--red)', color: '#fff',
-                    fontSize: '12px', fontWeight: 700, padding: '3px 8px',
-                    borderRadius: '2px', letterSpacing: '.04em',
-                  }}>
-                    {discount}
-                  </span>
-                </div>
-                <div style={{
-                  fontFamily: 'Cormorant Garamond, serif',
-                  fontSize: '2.6rem', fontWeight: 500,
-                  color: 'var(--charcoal)', lineHeight: 1,
-                }}>
-                  {formatPrice(product.newPrice)}
-                </div>
-                <div style={{ fontSize: '12px', color: 'var(--stone)', marginTop: '8px' }}>
-                  Najniższa cena z 30 dni przed obniżką
-                </div>
-              </div>
-
-              {/* DESCRIPTION */}
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{
-                  fontSize: '13px', fontWeight: 600, letterSpacing: '.06em',
-                  textTransform: 'uppercase', color: 'var(--stone)', marginBottom: '12px',
-                }}>
-                  Opis produktu
-                </h3>
-                <p style={{ fontSize: '15px', lineHeight: 1.7, color: 'var(--charcoal)' }}>
-                  {product.description}
-                </p>
-              </div>
-
-              {/* FLAWS */}
-              <div style={{ marginBottom: '32px' }}>
-                <h3 style={{
-                  fontSize: '13px', fontWeight: 600, letterSpacing: '.06em',
-                  textTransform: 'uppercase', color: 'var(--stone)', marginBottom: '12px',
-                }}>
-                  Stan i ewentualne wady
-                </h3>
-                {product.flaws.length === 0 ? (
-                  <div style={{
-                    background: 'rgba(46,125,86,.08)', border: '1px solid rgba(46,125,86,.2)',
-                    borderRadius: '3px', padding: '14px 16px',
-                    fontSize: '14px', color: 'var(--green)',
-                  }}>
-                    ✓ Informacje o stanie produktu pojawią się wkrótce
-                  </div>
-                ) : (
-                  <ul style={{ paddingLeft: '16px' }}>
-                    {product.flaws.map((flaw, i) => (
-                      <li key={i} style={{ fontSize: '14px', color: 'var(--charcoal)', marginBottom: '6px', lineHeight: 1.5 }}>
-                        {flaw}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {/* CTA BUTTONS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <a
-                  href="tel:+48887535955"
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                    background: 'var(--charcoal)', color: '#fff',
-                    padding: '16px 24px', borderRadius: '2px',
-                    fontSize: '14px', fontWeight: 600, letterSpacing: '.04em',
-                    textTransform: 'uppercase', transition: 'background .3s',
-                  }}
-                >
-                  <PhoneIcon /> Zadzwoń i zarezerwuj
-                </a>
-                <a
-                  href="mailto:outlet@notodom.pl"
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                    background: 'transparent', color: 'var(--charcoal)',
-                    padding: '15px 24px', borderRadius: '2px',
-                    fontSize: '14px', fontWeight: 500, letterSpacing: '.04em',
-                    border: '1px solid rgba(28,28,30,.2)', transition: 'all .3s',
-                  }}
-                >
-                  <MailIcon /> Zapytaj e-mailem
-                </a>
-              </div>
-
-              {/* TRUST */}
-              <div style={{
-                display: 'flex', gap: '16px', marginTop: '24px',
-                paddingTop: '24px', borderTop: '1px solid rgba(138,130,120,.15)',
-                flexWrap: 'wrap',
-              }}>
-                {['🚚 Własny transport', '📍 Odbiór osobisty', '🤝 Kontakt bezpośredni'].map(item => (
-                  <span key={item} style={{ fontSize: '12px', color: 'var(--stone)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* FOOTER */}
-        <footer style={{
-          background: 'var(--charcoal)', color: 'rgba(255,255,255,.6)',
-          padding: '40px 0', textAlign: 'center', fontSize: '13px',
-        }}>
-          <div className="container">
-            <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', color: '#fff', marginBottom: '8px' }}>
-              notoDOM <em style={{ color: 'var(--gold)' }}>Outlet</em>
+        {/* SIMILAR (tylko dla sprzedanych) */}
+        {sold && similar.length > 0 && (
+          <section style={{ marginTop: '72px' }}>
+            <span className="section-label">{product.categoryLabel}</span>
+            <h2 className="section-title">Podobne, dostępne od ręki</h2>
+            <div className="products-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
+              {similar.map(p => (
+                <a
+                  key={p.id}
+                  href={`/produkt/${p.id}`}
+                  className="product-card"
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                >
+                  {p.badge && <span className={`product-badge ${p.badgeClass}`}>{p.badge}</span>}
+                  <div className="product-img" style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                    <Image
+                      src={p.images[0]}
+                      alt={p.fullName}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: 'contain' }}
+                    />
+                  </div>
+                  <div className="product-body">
+                    <div className="product-origin">{p.categoryLabel}</div>
+                    <h3 className="product-name">{p.fullName}</h3>
+                    <div className="product-pricing">
+                      <span className="price-old">{formatPrice(p.oldPrice)}</span>
+                      <span className="price-new">{formatPrice(p.newPrice)}</span>
+                      <span className="price-save">{calcDiscount(p.oldPrice, p.newPrice)}</span>
+                    </div>
+                    <div className="product-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                      Zobacz szczegóły <ArrowIcon />
+                    </div>
+                  </div>
+                </a>
+              ))}
             </div>
-            <p>ul. Sienkiewicza 9, Zielona Góra · 📞 887 535 955 · outlet@notodom.pl</p>
+          </section>
+        )}
+        {sold && (
+          <div style={{ marginTop: similar.length > 0 ? '40px' : '56px', textAlign: 'center' }}>
+            <a href="/" style={{ color: 'var(--gold)', fontWeight: 500 }}>← Przejdź do strony głównej outletu</a>
           </div>
-        </footer>
+        )}
       </div>
-    </>
+
+      {/* FOOTER */}
+      <footer style={{
+        background: 'var(--charcoal)', color: 'rgba(255,255,255,.6)',
+        padding: '40px 0', textAlign: 'center', fontSize: '13px',
+      }}>
+        <div className="container">
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.4rem', color: '#fff', marginBottom: '8px' }}>
+            notoDOM <em style={{ color: 'var(--gold)' }}>Outlet</em>
+          </div>
+          <p>ul. Sienkiewicza 9, Zielona Góra · 📞 887 535 955 · outlet@notodom.pl</p>
+        </div>
+      </footer>
+    </div>
   )
 }

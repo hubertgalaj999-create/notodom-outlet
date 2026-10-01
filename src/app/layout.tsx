@@ -19,6 +19,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://outlet.notodom.pl'),
   title: 'notoDOM Outlet - Wyprzedaż Mebli Kuchennych i Salonowych | Zielona Góra',
   description: 'Ekskluzywne meble kuchenne, narożniki i stoły z ekspozycji. Rabaty do -70%! Sprawdź ofertę outletową notoDOM w Zielonej Górze. Własny transport i gwarancja.',
   keywords: ['outlet meblowy Zielona Góra', 'meble z ekspozycji', 'tanie kuchnie na wymiar', 'wyprzedaż mebli kuchennych', 'narożniki outlet'],
