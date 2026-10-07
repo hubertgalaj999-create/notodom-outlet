@@ -32,6 +32,11 @@ export const metadata: Metadata = {
     locale: 'pl_PL',
     type: 'website',
   },
+  verification: {
+    other: {
+      'msvalidate.01': '8B60382A17FD850F0F292151B435329C',
+    },
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
